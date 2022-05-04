@@ -13,13 +13,14 @@ function generate() {
 	let currentColor = new Color();
 	let minColor = Color.fromHex(data.minColor);
 	let maxColor = Color.fromHex(data.maxColor);
-	let upgradeMinColor = Color.fromHex(data.upgradeMinColor);
-	let upgradeMaxColor = Color.fromHex(data.upgradeMaxColor);
+	let maxLuminosity = data.maxLuminosity;
+	let threshold = data.threshold;
+	let glareFactor = data.glareFactor;
 	
 	for (let i = 0; i < starsCount; ++i) {
 		let x = Math.floor(Math.random() * canvas.width);
 		let y = Math.floor(Math.random() * canvas.height);
-		
+	/*	
 		if (Math.random() < data.upgradePercent) {
 			Color.lerp(currentColor, upgradeMinColor, upgradeMaxColor, Math.random());
 			context.fillStyle = currentColor.toHex();
@@ -41,6 +42,7 @@ function generate() {
 			context.fillStyle = currentColor.toHex();
 			context.fillRect(x, y, 1, 1);
 		}
+	*/
 	}
 }
 
