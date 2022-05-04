@@ -20,22 +20,24 @@
 				<td>Avg. stars per 100px<sup>2</sup></td>
 				<td><input data-name="starsPer10k" type="number" value="14"></td></tr>
 			<tr>
-				<td>Min color</td>
-				<td><input data-name="minColor" type="color" value="#FF8020"></td></tr>
-			<tr>
-				<td>Max color</td>
-				<td><input data-name="maxColor" type="color" value="#2080FF"></td></tr>
+				<td>Color range</td>
+				<td><input data-name="minColor" type="color" value="#FF8020">
+				<input data-name="maxColor" type="color" value="#2080FF"></td></tr>
 			<tr>
 				<td>Max luminosity</td>
 				<td><input data-name="maxLuminosity" type="number" value="100"></td>
 			</tr>
 			<tr>
-				<td>Glare threshold</td>
-				<td><input data-name="threshold" type="number" value="99"></td>
+				<td>Bloom coefficient</td>
+				<td><input data-name="bloomFactor" type="number" value="0.5"></td>
 			</tr>
 			<tr>
-				<td>Glare coefficient</td>
-				<td><input data-name="glareFactor" type="number" value="0"></td>
+				<td>Gamma</td>
+				<td><input data-name="gamma" type="number" value="2.2"></td>
+			</tr>
+			<tr>
+				<td>Exposure</td>
+				<td><input data-name="exposure" type="number" value="2"></td>
 			</tr>
 		</table>
 		
@@ -91,6 +93,7 @@
 		
 		<canvas id="canvas"></canvas>
 		
+		<script src="vec3.js"></script>
 		<script src="data.js"></script>
 		<script src="main.js"></script>
 		
