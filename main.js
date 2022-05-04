@@ -1,10 +1,79 @@
-function map(color, exposure) {
-	color[0] = 1 - Math.exp(-color[0] * exposure);
-	color[1] = 1 - Math.exp(-color[1] * exposure);
-	color[2] = 1 - Math.exp(-color[2] * exposure);
-}
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
 
 function generate() {
+	canvas.width = data.imageWidth;
+	canvas.height = data.imageHeight;
+	let fragments = new Uint8ClampedArray(canvas.width * canvas.height * 4);
+
+	const Kc = data.Kc;
+	const Kl = data.Kl;
+	const Kq = data.Kq;
+
+	let minColor = vec3_create(1.0, 0.5, 0.125);
+	let maxColor = vec3_create(0.125, 0.5, 1.0);
+	let maxLuminance = data.maxLuminosity;
+
+	let stars = new Array();
+	let numStars = data.starsPer10k * (data.imageWidth * data.imageHeight / 10e3);
+
+	for (let i = 0; i < numStars; ++i) {
+
+		let position = [ Math.floor(Math.random() * canvas.width), Math.floor(Math.random() * canvas.height)];
+		let color = vec3_create(1, 1, 1);
+		vec3_mix(color, minColor, maxColor, Math.random());
+		let luminance = Math.random() * maxLuminance;
+
+		let star = {
+			position: position,
+			color: color,
+			luminance: luminance
+		};
+
+		stars.push(star);
+	}
+	console.log("wish me luck");
+	let color = vec3_create(0, 0, 0, 1);
+	for (let i = 0; i < fragments.length; i += 4) {
+		fragments[i + 0] = 0;
+		fragments[i + 1] = 0;
+		fragments[i + 2] = 0;
+		fragments[i + 3] = 255;
+
+		let position = [ (i / 4) % canvas.width, Math.floor(i / 4 / canvas.width) ];
+		for(let j = 0; j < stars.length; ++j) {
+
+			let dist = [
+				stars[j].position[0] - position[0],
+				stars[j].position[1] - position[1]
+			];
+
+			let len = Math.sqrt(dist[0] * dist[0] + dist[1] * dist[1]);
+			vec3_copy(color, stars[j].color);
+			vec3_mul(color, stars[j].luminance);
+			if (len != 0) vec3_mul(color, 1 / (Kc + Kl * len + Kq * len * len));
+			
+			map(color);
+			vec3_mul(color, 255);
+			fragments[i + 0] += color[0];
+			fragments[i + 1] += color[1];
+			fragments[i + 2] += color[2];
+		}
+	}
+	
+	ctx.putImageData(new ImageData(fragments, canvas.width, canvas.height), 0, 0);
+	console.log("ah fuck me mate");
+}
+
+
+
+function map(color) {
+	color[0] = color[0] / (color[0] + 1);
+	color[1] = color[1] / (color[1] + 1);
+	color[2] = color[2] / (color[2] + 1);
+}
+
+function generatepenis() {
 	let canvas = document.getElementById("canvas");
 	let ctx = canvas.getContext("2d");
 	let scale = 2;
