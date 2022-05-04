@@ -13,6 +13,7 @@ function generate() {
 	let minColor = vec3_create(1.0, 0.5, 0.125);
 	let maxColor = vec3_create(0.125, 0.5, 1.0);
 	let maxLuminance = data.maxLuminosity;
+	let exposure = data.exposure;
 
 	let stars = new Array();
 	let numStars = data.starsPer10k * (data.imageWidth * data.imageHeight / 10e3);
@@ -53,7 +54,7 @@ function generate() {
 			vec3_mul(color, stars[j].luminance);
 			if (len != 0) vec3_mul(color, 1 / (Kc + Kl * len + Kq * len * len));
 			
-			map(color);
+			map(color, exposure);
 			vec3_mul(color, 255);
 			fragments[i + 0] += color[0];
 			fragments[i + 1] += color[1];
@@ -67,10 +68,10 @@ function generate() {
 
 
 
-function map(color) {
-	color[0] = color[0] / (color[0] + 1);
-	color[1] = color[1] / (color[1] + 1);
-	color[2] = color[2] / (color[2] + 1);
+function map(color, exposure) {
+	color[0] = 1.0 - Math.exp(-color[0] * exposure);
+	color[1] = 1.0 - Math.exp(-color[1] * exposure);
+	color[2] = 1.0 - Math.exp(-color[2] * exposure);
 }
 
 function generatepenis() {
